@@ -739,6 +739,11 @@ body {
     .hero {
         background-attachment: fixed;
     }
+
+    .hero-container {
+        width: min(100%, 800px);
+        height: 400px;
+    }
     
     .products-container {
         max-width: 800px;

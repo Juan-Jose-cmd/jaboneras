@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda · Círculo de Jaboneras</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Aboreto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Allerta&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./styles.css">
+    <style>
+        /* ========== ESTILOS EXCLUSIVOS PARA LA TIENDA ========== */
+        /* Pequeños ajustes para no alterar el styles.css original */
+        .shop-hero {
+            min-height: 60vh;
+            background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg');
+            background-position: center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            isolation: isolate;
+        }
+
+        .shop-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            z-index: -1;
+        }
+
+        .shop-hero-container {
+            background-color: var(--color-cream);
+            padding: 2rem 3rem;
+            transform: rotate(-1deg);
+            border: 1px solid var(--color-black);
+            box-shadow: var(--box-shadow-offset) var(--box-shadow-offset) 0 rgba(0,0,0,0.1);
+        }
+
+        .shop-hero-container h1 {
+            transform: rotate(1deg);
+            font-size: clamp(2rem, 5vw, 3rem);
+        }
+
+        .shop-hero-container p {
+            font-family: var(--font-hand);
+            font-size: 1.3rem;
+            transform: rotate(1deg);
+            margin-top: 0.5rem;
+        }
+
+        /* Filtros */
+        .shop-filters {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            font-family: var(--font-body);
+            background-color: transparent;
+            border: 1px solid var(--color-black);
+            padding: 0.8rem 2.5rem;
+            font-size: 1.1rem;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background-color: var(--color-terracota);
+            color: var(--color-white);
+            border-color: var(--color-white);
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.15);
+        }
+
+        /* Grid de la tienda */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            width: 90%;
+            margin: 0 auto 4rem;
+        }
+
+        .shop-card {
+            background-color: var(--color-cream);
+            border: 1px solid var(--color-black);
+            padding: 1.5rem 1rem 1.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 8px 8px 0 rgba(212, 165, 154, 0.3);
+            transition: var(--transition);
+            transform: rotate(var(--rotate, 0deg));
+        }
+
+        .shop-card:hover {
+            transform: translate(-5px, -5px) rotate(var(--rotate, 0deg));
+            box-shadow: 12px 12px 0 rgba(212, 165, 154, 0.5);
+        }
+
+        /* Rotaciones aleatorias para las cards */
+        .shop-card:nth-child(odd) { --rotate: -1deg; }
+        .shop-card:nth-child(even) { --rotate: 1.5deg; }
+        .shop-card:nth-child(3n) { --rotate: 2deg; }
+        .shop-card:nth-child(5n) { --rotate: -1.5deg; }
+
+        .shop-card-image {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg');
+            background-position: center;
+            background-size: cover;
+            border: 1px solid var(--color-black);
+            margin-bottom: 1rem;
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+        }
+
+        /* Variedad de imágenes de ejemplo (cámbialas por las tuyas) */
+        .shop-card-1 .shop-card-image { background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg'); }
+        .shop-card-2 .shop-card-image { background-image: url('./resources/descarga\ \(1\).jfif'); }
+        .shop-card-3 .shop-card-image { background-image: url('./resources/descarga.jfif'); }
+        .shop-card-4 .shop-card-image { background-image: url('./resources/descarga\ \(2\).jfif'); }
+        .shop-card-5 .shop-card-image { background-image: url('./resources/descarga\ \(1\).jfif'); }
+        .shop-card-6 .shop-card-image { background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg'); }
+
+        .shop-card h3 {
+            font-family: var(--font-title);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid var(--color-terracota);
+            display: inline-block;
+        }
+
+        .shop-card .badge {
+            font-family: var(--font-hand);
+            background-color: var(--color-terracota);
+            color: var(--color-white);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid var(--color-black);
+        }
+
+        .shop-card p {
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            margin: 1rem 0;
+            flex-grow: 1;
+        }
+
+        .shop-card .price {
+            font-family: var(--font-title);
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+            background-color: rgba(255,255,255,0.7);
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            border: 1px dashed var(--color-black);
+        }
+
+        .shop-btn {
+            background-color: transparent;
+            border: 1px solid var(--color-black);
+            padding: 0.7rem 2rem;
+            font-family: var(--font-body);
+            margin-top: 1rem;
+            transition: var(--transition);
+            width: 100%;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+        }
+
+        .shop-btn:hover {
+            background-color: var(--color-terracota);
+            border-color: var(--color-white);
+            color: var(--color-white);
+            transform: scale(0.98);
+        }
+
+        /* Sección informativa */
+        .shop-info {
+            background-color: var(--color-terracota);
+            padding: 3rem 2rem;
+            margin: 2rem 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 3rem;
+            border-top: 3px solid var(--color-cream);
+            border-bottom: 3px solid var(--color-cream);
+        }
+
+        .info-item {
+            background-color: var(--color-cream);
+            padding: 1.5rem 2rem;
+            transform: rotate(-1deg);
+            border: 1px solid var(--color-black);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 250px;
+        }
+
+        .info-item h4 {
+            font-family: var(--font-hand);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item p {
+            font-family: var(--font-body);
+            font-size: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .shop-info {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO de la tienda -->
+    <section class="shop-hero">
+        <div class="shop-hero-container">
+            <h1>Nuestras creaciones</h1>
+            <p>Hecho a mano · Con corazón · Para ti</p>
+        </div>
+    </section>
+
+    <!-- FILTROS rápidos (solo visual) -->
+    <div class="shop-filters">
+        <button class="filter-btn active">Todo</button>
+        <button class="filter-btn">Jabones</button>
+        <button class="filter-btn">Esencias</button>
+        <button class="filter-btn">Talleres</button>
+    </div>
+
+    <!-- GRID DE PRODUCTOS Y TALLERES -->
+    <section class="shop-grid">
+        <!-- Producto 1: Jabón artesanal -->
+        <div class="shop-card shop-card-1">
+            <div class="shop-card-image"></div>
+            <span class="badge">Jabonería</span>
+            <h3>Jabón de caléndula</h3>
+            <p>Elaborado con aceites infusionados en caléndula, ideal para pieles sensibles.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Ver detalle</button>
+        </div>
+
+        <!-- Producto 2: Perfume sólido -->
+        <div class="shop-card shop-card-2">
+            <div class="shop-card-image"></div>
+            <span class="badge">Perfumería</span>
+            <h3>Perfume sólido · Rosa mosqueta</h3>
+            <p>Aroma floral y cítrico, con manteca de karité para hidratar la piel.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Ver detalle</button>
+        </div>
+
+        <!-- Producto 3: Curso de iniciación (Taller) -->
+        <div class="shop-card shop-card-3">
+            <div class="shop-card-image"></div>
+            <span class="badge">Taller · Principiantes</span>
+            <h3>Introducción a la jabonería natural</h3>
+            <p>Aprende la técnica en frío desde casa. Incluye guía y sesión en vivo.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Más info</button>
+        </div>
+
+        <!-- Producto 4: Esencia energética -->
+        <div class="shop-card shop-card-4">
+            <div class="shop-card-image"></div>
+            <span class="badge">Esencias</span>
+            <h3>Esencia · Luna llena</h3>
+            <p>Mezcla de lavanda, salvia y sándalo para limpieza energética.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Ver detalle</button>
+        </div>
+
+        <!-- Producto 5: Jabón exfoliante -->
+        <div class="shop-card shop-card-5">
+            <div class="shop-card-image"></div>
+            <span class="badge">Jabonería</span>
+            <h3>Jabón de café y menta</h3>
+            <p>Exfoliante natural, ideal para renovar la piel y activar la circulación.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Ver detalle</button>
+        </div>
+
+        <!-- Producto 6: Curso de esencias (Taller) -->
+        <div class="shop-card shop-card-6">
+            <div class="shop-card-image"></div>
+            <span class="badge">Taller · Online</span>
+            <h3>Elaboración de esencias y perfumes</h3>
+            <p>Aprende a crear tus propias sinergias con aceites esenciales.</p>
+            <div class="price">1000</div>
+            <button class="shop-btn">Más info</button>
+        </div>
+    </section>
+
+    <!-- FOOTER-->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <h4>Círculo de Jaboneras</h4>
+                <p>circulo@jaboneras.com</p>
+                <p>+34 123 456 789</p>
+            </div>
+        
+            <div class="footer-links">
+                <h4>Explora</h4>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="tienda.html">Tienda</a></li>
+                    <li><a href="index.html#contact">Contacto</a></li>
+                </ul>
+            </div>
+        
+            <div class="footer-social">
+                <h4>Síguenos</h4>
+                <div class="footer-social-icons">
+                    <a href="#"><img src="./resources/facebook-icon" alt="Facebook"></a>
+                    <a href="#"><img src="./resources/instagram-icon.webp" alt="Instagram"></a>
+                    <a href="#"><img src="./resources/whatsapp-icon.webp" alt="WhatsApp"></a>
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer-divider"></div>
+    
+        <div class="footer-bottom">
+            <p>© 2026 Círculo de Jaboneras - Todos los derechos reservados</p>
+        </div>
+    </footer>
+</body>
+</html>

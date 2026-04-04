@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="./styles.css">
     <style>
         /* ========== ESTILOS EXCLUSIVOS PARA LA TIENDA ========== */
-        /* Pequeños ajustes para no alterar el styles.css original */
         .shop-hero {
             min-height: 60vh;
             background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg');
@@ -72,6 +71,7 @@
             font-size: 1.1rem;
             box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
             transition: var(--transition);
+            cursor: pointer;
         }
 
         .filter-btn:hover,
@@ -111,7 +111,6 @@
             box-shadow: 12px 12px 0 rgba(212, 165, 154, 0.5);
         }
 
-        /* Rotaciones aleatorias para las cards */
         .shop-card:nth-child(odd) { --rotate: -1deg; }
         .shop-card:nth-child(even) { --rotate: 1.5deg; }
         .shop-card:nth-child(3n) { --rotate: 2deg; }
@@ -128,7 +127,6 @@
             box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
         }
 
-        /* Variedad de imágenes de ejemplo (cámbialas por las tuyas) */
         .shop-card-1 .shop-card-image { background-image: url('./resources/como-hacer-jabon-natural_c5d7893d_674x818.jpg'); }
         .shop-card-2 .shop-card-image { background-image: url('./resources/descarga\ \(1\).jfif'); }
         .shop-card-3 .shop-card-image { background-image: url('./resources/descarga.jfif'); }
@@ -181,6 +179,7 @@
             transition: var(--transition);
             width: 100%;
             box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            cursor: pointer;
         }
 
         .shop-btn:hover {
@@ -190,7 +189,6 @@
             transform: scale(0.98);
         }
 
-        /* Sección informativa */
         .shop-info {
             background-color: var(--color-terracota);
             padding: 3rem 2rem;
@@ -223,6 +221,33 @@
             font-family: var(--font-body);
             font-size: 1rem;
         }
+        
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-terracota);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid var(--color-cream);
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
 
         @media (max-width: 768px) {
             .shop-info {
@@ -242,101 +267,102 @@
         </div>
     </section>
 
-    <!-- FILTROS rápidos (solo visual) -->
-    <div class="shop-filters">
-        <button class="filter-btn active">Todo</button>
-        <button class="filter-btn">Jabones</button>
-        <button class="filter-btn">Esencias</button>
-        <button class="filter-btn">Talleres</button>
+    <!-- FILTROS rápidos (funcionales) -->
+    <div class="shop-filters" id="filterContainer">
+        <button class="filter-btn active" data-filter="all">Todo</button>
+        <button class="filter-btn" data-filter="jabones">Jabones</button>
+        <button class="filter-btn" data-filter="esencias">Esencias</button>
+        <button class="filter-btn" data-filter="talleres">Talleres</button>
     </div>
 
     <!-- GRID DE PRODUCTOS Y TALLERES -->
-    <section class="shop-grid">
+    <section class="shop-grid" id="shopGrid">
         <!-- Producto 1: Jabón artesanal -->
-        <div class="shop-card shop-card-1">
+        <div class="shop-card shop-card-1" data-category="jabones">
             <div class="shop-card-image"></div>
             <span class="badge">Jabonería</span>
             <h3>Jabón de caléndula</h3>
             <p>Elaborado con aceites infusionados en caléndula, ideal para pieles sensibles.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Ver detalle</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Jabón de caléndula">Ver detalle</button>
         </div>
 
         <!-- Producto 2: Perfume sólido -->
-        <div class="shop-card shop-card-2">
+        <div class="shop-card shop-card-2" data-category="esencias">
             <div class="shop-card-image"></div>
             <span class="badge">Perfumería</span>
             <h3>Perfume sólido · Rosa mosqueta</h3>
             <p>Aroma floral y cítrico, con manteca de karité para hidratar la piel.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Ver detalle</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Perfume sólido">Ver detalle</button>
         </div>
 
         <!-- Producto 3: Curso de iniciación (Taller) -->
-        <div class="shop-card shop-card-3">
+        <div class="shop-card shop-card-3" data-category="talleres">
             <div class="shop-card-image"></div>
             <span class="badge">Taller · Principiantes</span>
             <h3>Introducción a la jabonería natural</h3>
             <p>Aprende la técnica en frío desde casa. Incluye guía y sesión en vivo.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Más info</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Curso de iniciación">Más info</button>
         </div>
 
         <!-- Producto 4: Esencia energética -->
-        <div class="shop-card shop-card-4">
+        <div class="shop-card shop-card-4" data-category="esencias">
             <div class="shop-card-image"></div>
             <span class="badge">Esencias</span>
             <h3>Esencia · Luna llena</h3>
             <p>Mezcla de lavanda, salvia y sándalo para limpieza energética.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Ver detalle</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Esencia Luna llena">Ver detalle</button>
         </div>
 
         <!-- Producto 5: Jabón exfoliante -->
-        <div class="shop-card shop-card-5">
+        <div class="shop-card shop-card-5" data-category="jabones">
             <div class="shop-card-image"></div>
             <span class="badge">Jabonería</span>
             <h3>Jabón de café y menta</h3>
             <p>Exfoliante natural, ideal para renovar la piel y activar la circulación.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Ver detalle</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Jabón de café y menta">Ver detalle</button>
         </div>
 
-        <!-- Producto 6: Curso de esencias (Taller) -->
-        <div class="shop-card shop-card-6">
+        <!-- Producto 6: Curso de esencias  -->
+        <div class="shop-card shop-card-6" data-category="talleres">
             <div class="shop-card-image"></div>
             <span class="badge">Taller · Online</span>
             <h3>Elaboración de esencias y perfumes</h3>
             <p>Aprende a crear tus propias sinergias con aceites esenciales.</p>
-            <div class="price">1000</div>
-            <button class="shop-btn">Más info</button>
+            <div class="price">$1000</div>
+            <button class="shop-btn" data-product="Taller de esencias">Más info</button>
         </div>
     </section>
 
-    <!-- FOOTER-->
+   
+    <!-- FOOTER -->
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-info">
                 <h4>Círculo de Jaboneras</h4>
                 <p>circulo@jaboneras.com</p>
-                <p>+34 123 456 789</p>
+                <p>+54 123 456 789</p>
             </div>
         
             <div class="footer-links">
                 <h4>Explora</h4>
                 <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="tienda.html">Tienda</a></li>
-                    <li><a href="index.html#contact">Contacto</a></li>
+                    <li><a href="index.html" id="goHomeLink">Inicio</a></li>
+                    <li><a href="tienda.html" id="currentShopLink">Tienda</a></li>
+                    <li><a href="index.html#contact" id="contactIndexLink">Contacto</a></li>
                 </ul>
             </div>
         
             <div class="footer-social">
                 <h4>Síguenos</h4>
                 <div class="footer-social-icons">
-                    <a href="#"><img src="./resources/facebook-icon" alt="Facebook"></a>
-                    <a href="#"><img src="./resources/instagram-icon.webp" alt="Instagram"></a>
-                    <a href="#"><img src="./resources/whatsapp-icon.webp" alt="WhatsApp"></a>
+                    <a href="#" id="footerFacebookShop"><img src="./resources/facebook-icon" alt="Facebook"></a>
+                    <a href="#" id="footerInstagramShop"><img src="./resources/instagram-icon.webp" alt="Instagram"></a>
+                    <a href="#" id="footerWhatsappShop"><img src="./resources/whatsapp-icon.webp" alt="WhatsApp"></a>
                 </div>
             </div>
         </div>
@@ -347,5 +373,80 @@
             <p>© 2026 Círculo de Jaboneras - Todos los derechos reservados</p>
         </div>
     </footer>
+
+    <script>
+        // Funcionalidades tienda: filtros, botones de producto y navegación
+        function showMessageShop(text) {
+            const existing = document.querySelector('.toast-notification');
+            if(existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = text;
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Filtros
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const productsGrid = document.getElementById('shopGrid');
+        const allCards = Array.from(document.querySelectorAll('.shop-card'));
+
+        function filterProducts(category) {
+            allCards.forEach(card => {
+                if(category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const filter = btn.getAttribute('data-filter');
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                filterProducts(filter);
+            });
+        });
+
+        // Botones de cada producto
+        const allShopBtns = document.querySelectorAll('.shop-btn');
+        allShopBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const productName = btn.getAttribute('data-product') || 'producto';
+                showMessageShop(`✨ ${productName}: próximamente podrás ver el detalle completo. Mientras tanto, escríbenos para más información.`);
+            });
+        });
+
+        // Enlaces del footer
+        const goHome = document.getElementById('goHomeLink');
+        if(goHome) goHome.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'index.html'; });
+        
+        const contactLink = document.getElementById('contactIndexLink');
+        if(contactLink) contactLink.addEventListener('click', (e) => { e.preventDefault(); window.location.href = 'index.html#contact'; });
+        
+        // Redes sociales en footer tienda
+        const fbShop = document.getElementById('footerFacebookShop');
+        const igShop = document.getElementById('footerInstagramShop');
+        const waShop = document.getElementById('footerWhatsappShop');
+        const socialHandler = (network) => showMessageShop(`📱 Serás redirigida a nuestro perfil de ${network} (próximamente activo).`);
+        if(fbShop) fbShop.addEventListener('click', (e) => { e.preventDefault(); socialHandler('Facebook'); });
+        if(igShop) igShop.addEventListener('click', (e) => { e.preventDefault(); socialHandler('Instagram'); });
+        if(waShop) waShop.addEventListener('click', (e) => { e.preventDefault(); socialHandler('WhatsApp'); });
+        
+        // Click en cards también podría mostrar mensaje 
+        allCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                if(e.target.classList && e.target.classList.contains('shop-btn')) return;
+                const title = card.querySelector('h3')?.innerText || 'producto';
+                showMessageShop(`✨ Explora más sobre "${title}". Pronto habilitaremos la tienda completa.`);
+            });
+        });
+    </script>
 </body>
 </html>

@@ -11,6 +11,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Annie+Use+Your+Telescope&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./reset.css">
     <link rel="stylesheet" href="./styles.css">
+    <style>
+        /* Pequeñas correcciones para asegurar el funcionamiento visual */
+        .about-box button, .products button, .contact-card-3 button, .shop-btn {
+            cursor: pointer;
+        }
+        .footer-links ul li a {
+            cursor: pointer;
+        }
+        /* Estilos para el modal de alerta personalizado */
+        .toast-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--color-terracota);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            border: 1px solid var(--color-cream);
+            animation: fadeInUp 0.3s ease forwards;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Hero section -->
@@ -43,7 +79,7 @@
             <div class="about-box box-4">
                 <h3>Contactanos para saber mas</h3>
                 <img src="./resources/down-arrow_3710768.png" alt="flecha">
-                <button>Click</button>
+                <button id="contactBtnAbout">Click</button>
             </div>
         </div>
     </section>
@@ -100,7 +136,7 @@
             </div>
         </div>
 
-        <button onclick="window.location.href='tienda.html'">Descubre mucho mas!</button>
+        <button id="discoverBtn">Descubre mucho mas!</button>
     </section>
 
     <!-- Contact section -->
@@ -117,17 +153,17 @@
             <div class="contact-card contact-card-2">
                 <p>Síguenos en redes</p>
                 <div class="social-icons">
-                    <img src="./resources/facebook-icon" alt="Facebook">
-                    <img src="./resources/instagram-icon.webp" alt="Instagram">
-                    <img src="./resources/whatsapp-icon.webp" alt="WhatsApp">
+                    <img src="./resources/facebook-icon" alt="Facebook" id="facebookIcon">
+                    <img src="./resources/instagram-icon.webp" alt="Instagram" id="instagramIcon">
+                    <img src="./resources/whatsapp-icon.webp" alt="WhatsApp" id="whatsappIcon">
                 </div>
             </div>
         
             <div class="contact-card contact-card-3">
-                <form>
-                    <input type="text" placeholder="Tu nombre" required>
-                    <input type="email" placeholder="Tu email" required>
-                    <textarea rows="3" placeholder="Tu mensaje"></textarea>
+                <form id="contactForm">
+                    <input type="text" id="contactName" placeholder="Tu nombre" required>
+                    <input type="email" id="contactEmail" placeholder="Tu email" required>
+                    <textarea id="contactMessage" rows="3" placeholder="Tu mensaje"></textarea>
                     <button type="submit">Enviar mensaje</button>
                 </form>
             </div>
@@ -136,7 +172,7 @@
                 <h4>Información</h4>
                 <div class="contact-info">
                     <p>circulo@jaboneras.com</p>
-                    <p>+34 123 456 789</p>
+                    <p>+54 123 456 789</p>
                 </div>
             </div>
         </div>
@@ -150,25 +186,25 @@
             <div class="footer-info">
                 <h4>Círculo de Jaboneras</h4>
                 <p>circulo@jaboneras.com</p>
-                <p>+34 123 456 789</p>
+                <p>+54 123 456 789</p>
             </div>
         
             <div class="footer-links">
                 <h4>Explora</h4>
                 <ul>
-                    <li><a href="#about">Sobre nosotras</a></li>
-                    <li><a href="#products">Productos</a></li>
-                    <li><a href="./tienda.html">Cursos</a></li>
-                    <li><a href="#contact">Contacto</a></li>
+                    <li><a href="#about" class="footer-nav-link">Sobre nosotras</a></li>
+                    <li><a href="#products" class="footer-nav-link">Productos</a></li>
+                    <li><a href="./tienda.html" id="footerShopLink">Cursos</a></li>
+                    <li><a href="#contact" class="footer-nav-link">Contacto</a></li>
                 </ul>
             </div>
         
             <div class="footer-social">
                 <h4>Síguenos</h4>
                 <div class="footer-social-icons">
-                    <a href="#"><img src="./resources/facebook-icon" alt="Facebook"></a>
-                    <a href="#"><img src="./resources/instagram-icon.webp" alt="Instagram"></a>
-                    <a href="#"><img src="./resources/whatsapp-icon.webp" alt="WhatsApp"></a>
+                    <a href="#" id="footerFacebook"><img src="./resources/facebook-icon" alt="Facebook"></a>
+                    <a href="#" id="footerInstagram"><img src="./resources/instagram-icon.webp" alt="Instagram"></a>
+                    <a href="#" id="footerWhatsapp"><img src="./resources/whatsapp-icon.webp" alt="WhatsApp"></a>
                 </div>
             </div>
         </div>
@@ -179,5 +215,184 @@
             <p>© 2026 Círculo de Jaboneras - Todos los derechos reservados</p>
         </div>
     </footer>
+
+    <script>
+        function showMessage(text, isError = false) {
+            // Eliminar toast existente si lo hay
+            const existingToast = document.querySelector('.toast-notification');
+            if(existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = 'toast-notification';
+            toast.textContent = text;
+            if(isError) {
+                toast.style.backgroundColor = '#b85c4a';
+            }
+            document.body.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function scrollToSection(sectionId) {
+            const section = document.querySelector(sectionId);
+            if(section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                console.warn(`Sección ${sectionId} no encontrada`);
+            }
+        }
+
+        // Validación simple de email
+        function isValidEmail(email) {
+            const re = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+            return re.test(email);
+        }
+
+        // Manejo del formulario de contacto
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('contactName');
+            const emailInput = document.getElementById('contactEmail');
+            const messageInput = document.getElementById('contactMessage');
+            
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim();
+            const message = messageInput.value.trim();
+            
+            if(!name) {
+                showMessage('Por favor, ingresa tu nombre', true);
+                nameInput.focus();
+                return;
+            }
+            if(!email) {
+                showMessage('Por favor, ingresa tu email', true);
+                emailInput.focus();
+                return;
+            }
+            if(!isValidEmail(email)) {
+                showMessage('Por favor, ingresa un email válido (ej: nombre@dominio.com)', true);
+                emailInput.focus();
+                return;
+            }
+            if(!message) {
+                showMessage('Escribe tu mensaje antes de enviar', true);
+                messageInput.focus();
+                return;
+            }
+            
+            // Simular envío exitoso 
+            showMessage(`✨ ¡Gracias ${name}! Tu mensaje ha sido enviado. Pronto nos pondremos en contacto contigo.`);
+            // Limpiar formulario
+            nameInput.value = '';
+            emailInput.value = '';
+            messageInput.value = '';
+        }
+
+        // Función para redirigir a tienda.html 
+        function goToShop() {
+            window.location.href = './tienda.html';
+        }
+
+        // Función para simular clic en productos 
+        function handleProductCard(productName) {
+            showMessage(`✨ ¡Próximamente! Podrás descubrir todos nuestros ${productName}. Por ahora, visita nuestra tienda.`);
+        }
+
+        // Función para redes sociales 
+        function handleSocialNetwork(network) {
+            showMessage(`📱 Serás redirigida a nuestro perfil de ${network} (próximamente activo). ¡Síguenos para más contenido!`);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // 1. BOTÓN "CLICK" EN ABOUT 
+            const contactAboutBtn = document.getElementById('contactBtnAbout');
+            if(contactAboutBtn) {
+                contactAboutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    scrollToSection('#contact');
+                });
+            }
+
+            // 2. BOTÓN "DESCUBRE MUCHO MAS" 
+            const discoverBtn = document.getElementById('discoverBtn');
+            if(discoverBtn) {
+                discoverBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goToShop();
+                });
+            }
+
+            // 3. TARJETAS DE PRODUCTOS 
+            const productCards = document.querySelectorAll('.products-card');
+            const productNames = ['Jabones', 'Cursos', 'Esencias', 'Perfumes'];
+            productCards.forEach((card, index) => {
+                const pTag = card.querySelector('p');
+                const productName = pTag ? pTag.innerText : productNames[index] || 'productos';
+                card.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    handleProductCard(productName);
+                });
+                card.style.cursor = 'pointer';
+            });
+
+            // 4. FORMULARIO DE CONTACTO
+            const contactForm = document.getElementById('contactForm');
+            if(contactForm) {
+                contactForm.addEventListener('submit', handleContactSubmit);
+            }
+
+            // 5. ICONOS DE REDES SOCIALES 
+            const fbIcon = document.getElementById('facebookIcon');
+            const igIcon = document.getElementById('instagramIcon');
+            const waIcon = document.getElementById('whatsappIcon');
+            if(fbIcon) fbIcon.addEventListener('click', () => handleSocialNetwork('Facebook'));
+            if(igIcon) igIcon.addEventListener('click', () => handleSocialNetwork('Instagram'));
+            if(waIcon) waIcon.addEventListener('click', () => handleSocialNetwork('WhatsApp'));
+            
+            // 6. ICONOS DE REDES EN FOOTER
+            const footerFb = document.getElementById('footerFacebook');
+            const footerIg = document.getElementById('footerInstagram');
+            const footerWa = document.getElementById('footerWhatsapp');
+            if(footerFb) footerFb.addEventListener('click', (e) => { e.preventDefault(); handleSocialNetwork('Facebook'); });
+            if(footerIg) footerIg.addEventListener('click', (e) => { e.preventDefault(); handleSocialNetwork('Instagram'); });
+            if(footerWa) footerWa.addEventListener('click', (e) => { e.preventDefault(); handleSocialNetwork('WhatsApp'); });
+            
+            // 7. ENLACES DE NAVEGACIÓN DEL FOOTER 
+            const footerNavLinks = document.querySelectorAll('.footer-nav-link');
+            footerNavLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href'); 
+                    if(targetId && targetId.startsWith('#')) {
+                        scrollToSection(targetId);
+                    }
+                });
+            });
+            
+            // 8. BOTÓN DEL FOOTER 
+            const footerShopLink = document.getElementById('footerShopLink');
+            if(footerShopLink) {
+                footerShopLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    goToShop();
+                });
+            }
+
+            // 9. FLECHA DEL HERO 
+            const heroArrowContainer = document.querySelector('.hero-arrow-container');
+            if(heroArrowContainer) {
+                heroArrowContainer.addEventListener('click', function() {
+                    scrollToSection('#about');
+                });
+                heroArrowContainer.style.cursor = 'pointer';
+            }
+            
+            console.log('Página completamente funcional: botones, formulario y navegación activos.');
+            
+        });
+    </script>
 </body>
 </html>
